@@ -1,22 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:monsy_weird_package/components/my_button.dart';
-import 'package:monsy_weird_package/pages/ai_chat_page.dart';
-import 'package:monsy_weird_package/pages/contacts_page.dart';
-import 'package:monsy_weird_package/services/auth/auth_service.dart';
 import 'package:provider/provider.dart';
 
+import '../services/auth/auth_service.dart';
 import 'chat_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class ContactsPage extends StatefulWidget {
+  const ContactsPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ContactsPage> createState() => _ContactsPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ContactsPageState extends State<ContactsPage> {
+
   // instance of auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -30,34 +28,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: const Text("HomePage"),
-    //     actions: [
-    //       // sign out button
-    //       IconButton(onPressed: signOut, icon: const Icon(Icons.logout))
-    //     ],
-    //   ),
-    //   body: _buildUserList(),
-    // );
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            MyButton(onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> ContactsPage()));
-            }, text: "contacts"),
-            SizedBox(
-              height: 20,
-            ),
-            MyButton(onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> AIChatPage()));
-
-            }, text: "aichat"),
-          ],
-        ),
+      appBar: AppBar(
+        title: const Text("HomePage"),
+        actions: [
+          // sign out button
+          IconButton(onPressed: signOut, icon: const Icon(Icons.logout))
+        ],
       ),
-    );
+      body: _buildUserList(),
+    );;
   }
 
   // build a list of users except for the current logged in user
@@ -105,7 +85,7 @@ class _HomePageState extends State<HomePage> {
           );
         },
       );
-    } else {
+    }else{
       return Container();
     }
   }
