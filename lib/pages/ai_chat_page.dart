@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AIChatPage extends StatefulWidget {
   const AIChatPage({super.key});
@@ -10,41 +12,52 @@ class AIChatPage extends StatefulWidget {
 }
 
 class _AIChatPageState extends State<AIChatPage> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _messageController = TextEditingController();
-  final List<Map<String, String>> _messages = []; // Stores conversation history
+  List<Map<String, String>> _messages = []; // Local chat history
 
-  // Function to send prompt to AI and update chat history
+  @override
+  void initState() {
+    super.initState();
+    _loadChatHistory(); // Load past messages from Firestore
+  }
+
+  // Function to send user message & get AI response
   Future<void> sendMessage() async {
     String userMessage = _messageController.text.trim();
+    if (userMessage.isEmpty) return;
 
-    if (userMessage.isNotEmpty) {
-      // Add user message to chat history
-      setState(() {
-        _messages.add({"role": "user", "text": userMessage});
-      });
+    // Store user message locally & in Firestore
+    setState(() {
+      _messages.add({"role": "user", "text": userMessage});
+    });
+    _messageController.clear();
+    saveChatMessage(userMessage, "User");
 
-      _messageController.clear(); // Clear input field
+    // Fetch AI response
+    String aiResponse = await fetchAIResponse(userMessage);
 
-      // Fetch AI-generated response
-      String aiResponse = await fetchAIResponse(userMessage);
-
-      // Add AI response to chat history
-      setState(() {
-        _messages.add({"role": "assistant", "text": aiResponse});
-      });
-    }
+    // Store AI response locally & in Firestore
+    setState(() {
+      _messages.add({"role": "assistant", "text": aiResponse});
+    });
+    saveChatMessage(aiResponse, "AI");
   }
 
   // Function to fetch AI response from API
   Future<String> fetchAIResponse(String prompt) async {
     try {
-      final uri = Uri.parse('http://10.0.2.2:5000/v1/completions'); // Adjust if needed
+      final uri = Uri.parse("http://10.0.2.2:5000/v1/chat/completions");
+
       final response = await http.post(
         uri,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           "model": "stablelm-zephyr-3b",
-          "prompt": "User: $prompt \n Assistant:",
+          "messages": [
+            {"role": "user", "content": prompt}
+          ],
           "max_tokens": 256,
           "temperature": 0.7,
           "top_p": 0.9,
@@ -53,26 +66,67 @@ class _AIChatPageState extends State<AIChatPage> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return data['choices'][0]['text']; // Extract AI-generated response
+        return data["choices"][0]["message"]["content"];
       } else {
+        print("❌ API Error: ${response.statusCode} - ${response.body}");
         return "Error: ${response.statusCode}";
       }
     } catch (error) {
-      return "AI response failed: ${error.toString()}";
+      print("❌ AI response failed: $error");
+      return "Error fetching AI response.";
     }
+  }
+
+  // Save chat message to Firestore
+  void saveChatMessage(String message, String sender) async {
+    User? user = _auth.currentUser;
+    if (user == null) return;
+
+    try {
+      await _firestore.collection("chatMessages").add({
+        "userId": user.uid,
+        "message": message,
+        "sender": sender,
+        "timestamp": FieldValue.serverTimestamp(),
+      });
+      print("✅ Chat message saved in Firestore!");
+    } catch (error) {
+      print("❌ Error saving message: $error");
+    }
+  }
+
+  // Load past chat messages from Firestore
+  void _loadChatHistory() async {
+    User? user = _auth.currentUser;
+    if (user == null) return;
+
+    QuerySnapshot snapshot = await _firestore
+        .collection("chatMessages")
+        .where("userId", isEqualTo: user.uid)
+        .orderBy("timestamp", descending: false)
+        .get();
+
+    setState(() {
+      _messages = snapshot.docs.map((doc) {
+        var data = doc.data() as Map<String, dynamic>;
+
+        return {
+          "role": data["sender"] == "User" ? "user" : "assistant",
+          "text": data["message"].toString(), // ✅ Ensure text is a String
+        } as Map<String, String>; // ✅ Explicitly cast to `Map<String, String>`
+      }).toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: const Text("AI Chat"),
-      ),
+      appBar: AppBar(title: const Text("AI Chat")),
       body: Column(
         children: [
-          Expanded(child: _buildMessageList()), // Display chat history
-          _buildMessageInput(), // User input field
+          Expanded(child: _buildMessageList()),
+          _buildMessageInput(),
         ],
       ),
     );

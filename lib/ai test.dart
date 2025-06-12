@@ -2,16 +2,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<String> sendPrompt(String prompt) async {
-  // api
-  final uri = Uri.parse('http://192.168.1.5:5000/v1/completions');
-
+  final uri = Uri.parse("http://127.0.0.1:5000/v1/chat/completions");
 
   final response = await http.post(
     uri,
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({
       "model": "stablelm-zephyr-3b",
-      "prompt": "User: $prompt \n Assistant:",
+      "messages": [ // ✅ Correct format for chat-based models
+        {"role": "user", "content": prompt}
+      ],
       "max_tokens": 256,
       "temperature": 0.7,
       "top_p": 0.9
@@ -20,12 +20,13 @@ Future<String> sendPrompt(String prompt) async {
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
-    return data['choices'][0]['text']; // Return the AI-generated response
+    return data['choices'][0]['message']['content']; // ✅ Updated response parsing
   } else {
     return "Error: ${response.statusCode} - ${response.body}";
   }
 }
+
 void main() async {
-  String aiResponse = await sendPrompt("i am feeling kinda down lately");
+  String aiResponse = await sendPrompt("I am feeling kinda down lately");
   print("Processed Response: $aiResponse");
 }

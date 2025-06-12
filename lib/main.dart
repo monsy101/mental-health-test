@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:monsy_weird_package/dio/shopping_page.dart';
 import 'package:monsy_weird_package/firebase_options.dart';
 import 'package:monsy_weird_package/old/test.dart';
+import 'package:monsy_weird_package/pages/ai_chat_page.dart';
+import 'package:monsy_weird_package/pages/mood_history_graph_page.dart';
+import 'package:monsy_weird_package/pages/mood_history_page.dart';
+import 'package:monsy_weird_package/pages/mood_page_test_one.dart';
 import 'package:monsy_weird_package/pages/mood_tracker_page.dart';
+import 'package:monsy_weird_package/pages/navigation_test_page.dart';
 import 'package:monsy_weird_package/pages/profile_page.dart';
 import 'package:monsy_weird_package/pages/yoga_page.dart';
 import 'package:monsy_weird_package/pages/yoga_positions_screen.dart';
@@ -42,7 +47,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       // home: Scaffold(body: AIChatWidget(),),
-      home: AuthGate(),
+      home: AIChatPage(),
       // home: MoodTrackerPage(),
     );
   }
