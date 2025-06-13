@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:monsy_weird_package/3bas/therapist_user_list_page.dart';
 
-import '../pages/login_page.dart';
+import '../3bas/login_page.dart';
 
 // Define custom colors (consistent with other pages)
 const Color primaryGreen = Color(0xFF91EEA5);
@@ -149,9 +150,7 @@ class _TherapistHomePageState extends State<TherapistHomePage> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginPage(
-                                    onTap: () {},
-                                  )),
+                              builder: (context) => LoginPage()),
                           // Assuming LoginPage is your entry point
                           (Route<dynamic> route) =>
                               false, // Remove all routes below
@@ -230,6 +229,51 @@ class _TherapistHomePageState extends State<TherapistHomePage> {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TherapistUserListPage()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(24.0),
+                decoration: BoxDecoration(
+                  color: cardBackground,
+                  borderRadius: BorderRadius.circular(12.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      blurRadius: 4.0,
+                      color: Color(0x33000000),
+                      offset: Offset(0.0, 2.0),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Wanna check the Chat page?',
+                      style: GoogleFonts.interTight(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: primaryText,
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+
+                    Text(
+                      'Check the full list of all users and your chat with them',
+                      style: GoogleFonts.inter(
+                        fontSize: 14.0,
+                        color: secondaryText,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

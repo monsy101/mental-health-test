@@ -6,10 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // For getting current user info
 import 'package:cloud_firestore/cloud_firestore.dart'; // For Firestore operations
 import 'package:monsy_weird_package/3bas/tasks_page.dart';
+import 'package:monsy_weird_package/3bas/user_profile_page.dart';
 import 'package:monsy_weird_package/3bas/visual_memory_game_screen.dart';
 import 'package:monsy_weird_package/pages/ai_chat_page.dart';
-
-import '../pages/chat_page.dart';
 import '../pages/contacts_page.dart';
 import '../pages/mood_page_test_one.dart';
 import '../pages/yoga_page.dart';
@@ -246,11 +245,10 @@ class _HomePageState extends State<HomePage> {
                     InkWell(
                       onTap: () async {
                         // Log out the user from Firebase
-                        await FirebaseAuth.instance.signOut();
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LandingPage()),
+                              builder: (context) => const UserProfilePage()),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -784,28 +782,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 80.0),
+              const SizedBox(height: 20.0),
               // Add padding for bottom navigation bar
             ],
           ),
         ),
-        // Bottom Navigation Bar
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          selectedItemColor: primaryGreen,
-          unselectedItemColor: secondaryText,
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index; // ✅ Dynamically change active tab
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.psychology_alt), label: 'Therapy'),
-            BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: 'Chat'),
-          ],
-        ),
+
 
       ),
     );

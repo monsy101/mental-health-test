@@ -6,9 +6,8 @@ import 'package:google_fonts/google_fonts.dart'; // For custom fonts
 import 'package:firebase_auth/firebase_auth.dart'; // For Firebase Authentication
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:monsy_weird_package/3bas/therapist_account_setup_page.dart';
-
-import '../3bas/home_page.dart';
-import '../3bas/login_page.dart'; // For Firebase Firestore
+import '../3bas/login_page.dart';
+import 'main_screen.dart'; // For Firebase Firestore
 
 // Import your LoginPage here
 // Import your HomePage here
@@ -717,107 +716,75 @@ class _RegisterPageState extends State<RegisterPage> {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 16.0),
                                 child: ElevatedButton(
-                                  onPressed: () async {
-                                    setState(() {
-                                      _autovalidateMode =
-                                          AutovalidateMode.always;
-                                    });
+                                    onPressed: () async {
+                                      setState(() {
+                                        _autovalidateMode = AutovalidateMode.always;
+                                      });
 
-                                    if (_formKey.currentState == null ||
-                                        !_formKey.currentState!.validate()) {
-                                      return;
-                                    }
+                                      if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
+                                        return;
+                                      }
 
-                                    try {
-                                      UserCredential userCredential =
-                                          await FirebaseAuth.instance
-                                              .createUserWithEmailAndPassword(
-                                        email: emailAddressTextController.text,
-                                        password: passwordTextController.text,
-                                      );
+                                      try {
+                                        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                          email: emailAddressTextController.text,
+                                          password: passwordTextController.text,
+                                        );
 
-                                      if (userCredential.user != null) {
-                                        await userCredential.user!
-                                            .updateDisplayName(
-                                                '${firstNameTextController.text} ${lastNameTextController.text}');
+                                        if (userCredential.user != null) {
+                                          await userCredential.user!.updateDisplayName(
+                                            '${firstNameTextController.text} ${lastNameTextController.text}',
+                                          );
 
-                                        String collectionName =
-                                            _selectedRegisterType ==
-                                                    UserType.patient
-                                                ? 'users'
-                                                : 'therapists';
-                                        CollectionReference targetCollection =
-                                            FirebaseFirestore.instance
-                                                .collection(collectionName);
+                                          String collectionName = _selectedRegisterType == UserType.patient ? 'users' : 'therapists';
+                                          CollectionReference targetCollection = FirebaseFirestore.instance.collection(collectionName);
 
-                                        // Initial data for the document
-                                        Map<String, dynamic> userData = {
-                                          'firstName': firstNameTextController
-                                              .text
-                                              .trim(),
-                                          'lastName': lastNameTextController
-                                              .text
-                                              .trim(),
-                                          'email':
-                                              emailAddressTextController.text,
-                                          'created_at':
-                                              FieldValue.serverTimestamp(),
-                                        };
+                                          // ✅ Include the user ID when saving to Firestore
+                                          Map<String, dynamic> userData = {
+                                            'uid': userCredential.user!.uid, // ✅ Adds userID
+                                            'firstName': firstNameTextController.text.trim(),
+                                            'lastName': lastNameTextController.text.trim(),
+                                            'email': emailAddressTextController.text,
+                                            'created_at': FieldValue.serverTimestamp(),
+                                          };
 
-                                        // If it's a therapist, add the isSetupComplete flag, initially false
-                                        if (_selectedRegisterType ==
-                                            UserType.therapist) {
-                                          userData['isSetupComplete'] = false;
-                                        }
+                                          // ✅ If it's a therapist, add setup completion flag
+                                          if (_selectedRegisterType == UserType.therapist) {
+                                            userData['isSetupComplete'] = false;
+                                          }
 
-                                        await targetCollection
-                                            .doc(userCredential.user!.uid)
-                                            .set(userData);
+                                          await targetCollection.doc(userCredential.user!.uid).set(userData); // ✅ Store userID as document ID
 
-                                        if (mounted) {
-                                          if (_selectedRegisterType ==
-                                              UserType.patient) {
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const HomePage()),
-                                            );
-                                          } else {
-                                            // UserType.therapist
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const TherapistAccountSetupPage()), // Navigate to TherapistAccountSetupPage
-                                            );
+                                          if (mounted) {
+                                            if (_selectedRegisterType == UserType.patient) {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => const MainScreen()),
+                                              );
+                                            } else {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => const TherapistAccountSetupPage()),
+                                              );
+                                            }
                                           }
                                         }
+                                      } on FirebaseAuthException catch (e) {
+                                        print('Firebase Auth Error: ${e.code} - ${e.message}');
+                                        String errorMessage = 'An error occurred. Please try again.';
+                                        if (e.code == 'weak-password') {
+                                          errorMessage = 'The password provided is too weak.';
+                                        } else if (e.code == 'email-already-in-use') {
+                                          errorMessage = 'An account already exists for that email.';
+                                        } else if (e.code == 'invalid-email') {
+                                          errorMessage = 'The email address is not valid.';
+                                        }
+                                        _showAlertDialog('Registration Failed', errorMessage);
+                                      } catch (e) {
+                                        print('General Error: $e');
+                                        _showAlertDialog('Error', 'Something went wrong during registration or data saving. Please try again.');
                                       }
-                                    } on FirebaseAuthException catch (e) {
-                                      print(
-                                          'Firebase Auth Error: ${e.code} - ${e.message}');
-                                      String errorMessage =
-                                          'An error occurred. Please try again.';
-                                      if (e.code == 'weak-password') {
-                                        errorMessage =
-                                            'The password provided is too weak.';
-                                      } else if (e.code ==
-                                          'email-already-in-use') {
-                                        errorMessage =
-                                            'An account already exists for that email.';
-                                      } else if (e.code == 'invalid-email') {
-                                        errorMessage =
-                                            'The email address is not valid.';
-                                      }
-                                      _showAlertDialog(
-                                          'Registration Failed', errorMessage);
-                                    } catch (e) {
-                                      print('General Error: $e');
-                                      _showAlertDialog('Error',
-                                          'Something went wrong during registration or data saving. Please try again.');
-                                    }
-                                  },
+                                    },
                                   style: ElevatedButton.styleFrom(
                                     minimumSize:
                                         const Size(double.infinity, 44.0),

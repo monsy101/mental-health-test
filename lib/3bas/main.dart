@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../3bas/home_page.dart';
 import 'LandingPage.dart';
+import 'main_screen.dart';
 
 void main() async {
   // Ensure Flutter widgets binding is initialized before using plugins.
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
           }
           // If there is a user logged in (snapshot.hasData is true), navigate to HomePage.
           if (snapshot.hasData) {
-            return const HomePage();
+            return const MainScreen();
           }
           // If no user is logged in, navigate to LandingPage.
           return const LandingPage();

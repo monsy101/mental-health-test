@@ -5,11 +5,13 @@ import 'package:flutter/gestures.dart'; // For TapGestureRecognizer in RichText
 import 'package:google_fonts/google_fonts.dart'; // For custom fonts
 import 'package:firebase_auth/firebase_auth.dart'; // For Firebase Authentication
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:monsy_weird_package/3bas/admin_home_page.dart';
 import 'package:monsy_weird_package/3bas/therapist_account_setup_page.dart';
 import 'package:monsy_weird_package/3bas/therapist_home_page.dart';
 
 import '../3bas/home_page.dart';
-import '../3bas/register_page.dart'; // For Firestore operations
+import '../3bas/register_page.dart';
+import 'main_screen.dart'; // For Firestore operations
 
 // Define custom colors based on your specifications and image analysis
 const Color primaryGreen =
@@ -493,7 +495,7 @@ class _LoginPageState extends State<LoginPage> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const HomePage()),
+                                                      const MainScreen()),
                                             );
                                           } else {
                                             // UserType.therapist
@@ -506,8 +508,14 @@ class _LoginPageState extends State<LoginPage> {
                                               Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const TherapistHomePage()), // Navigate to TherapistHomePage
+                                                    builder: (context) {
+                                                  if (userDoc['uid'] ==
+                                                      "c0lofbpXqbVdmXrqqUzbOuIHGU52") {
+                                                    return AdminHomePage();
+                                                  } else {
+                                                    return TherapistHomePage();
+                                                  }
+                                                }), // Navigate to TherapistHomePage
                                               );
                                             } else {
                                               Navigator.pushReplacement(
