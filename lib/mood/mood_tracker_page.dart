@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:monsy_weird_package/components/mood_component.dart';
-import 'package:monsy_weird_package/components/my_colors.dart';
+
+import '../components/my_colors.dart';
 
 class MoodTrackerPage extends StatefulWidget {
   const MoodTrackerPage({super.key});

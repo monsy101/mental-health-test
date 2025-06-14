@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:monsy_weird_package/3bas/home_page.dart';
+import 'package:monsy_weird_package/3bas/settings_page.dart';
 import 'package:monsy_weird_package/3bas/therapist_contacts_page.dart';
 import 'package:monsy_weird_package/pages/contacts_page.dart';
 
@@ -12,7 +13,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0; // Track active tab index
-  final List<Widget> _screens = [HomePage(), TherapistContactsPage(), ContactsPage()]; // Page list
+  final List<Widget> _screens = [HomePage(), TherapistContactsPage(), ContactsPage(), SettingsPage()]; // Page list
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,7 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.psychology_alt), label: 'Therapy'),
           BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: 'Chat'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings_rounded), label: 'settings'),
         ],
       ),
     );

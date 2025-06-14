@@ -1,48 +1,59 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:monsy_weird_package/yoga/wind_relieving_pose_widget.dart';
 
-class GetUsername extends StatelessWidget {
-  const GetUsername({super.key});
+import '../3bas/home_page.dart';
+import '3bas/LandingPage.dart';
+import '3bas/main_screen.dart';
+
+void main() async {
+  // Ensure Flutter widgets binding is initialized before using plugins.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase with the platform-specific options.
+  await Firebase.initializeApp();
+
+  // Run the Flutter application.
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      // The display name might be directly available if set during sign-up
-      if (user.displayName != null) {
-        return Text('Username: ${user.displayName}');
-      } else {
-        // If the username is stored in Firestore with the user's UID as the document ID
-        return FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .get(),
-          builder:
-              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return const Text("Something went wrong");
-            }
-
-            if (snapshot.hasData && !snapshot.data!.exists) {
-              return const Text("Document does not exist");
-            }
-
-            if (snapshot.connectionState == ConnectionState.done) {
-              Map<String, dynamic> data =
-                  snapshot.data!.data() as Map<String, dynamic>;
-              return Text(
-                  "Username: ${data['username'] ?? 'No Username'}"); // Assuming 'username' is the field name
-            }
-
-            return const CircularProgressIndicator();
-          },
-        );
-      }
-    } else {
-      return const Text('User not logged in.');
-    }
+    // MaterialApp is the base widget for a Material Design app.
+    return MaterialApp(
+      title: 'Theraputech',
+      // App title
+      theme: ThemeData(
+        primarySwatch: Colors.blue, // Define your primary color theme
+        visualDensity: VisualDensity
+            .adaptivePlatformDensity, // Adapts UI to platform specifics
+      ),
+      // Use a StreamBuilder to listen for Firebase authentication state changes.
+      // This determines whether to show the LandingPage or HomePage.
+      // home: StreamBuilder<User?>(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     // While waiting for the authentication state, show a loading indicator.
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return const Scaffold(
+      //         body: Center(
+      //           child: CircularProgressIndicator(), // Simple loading indicator
+      //         ),
+      //       );
+      //     }
+      //     // If there is a user logged in (snapshot.hasData is true), navigate to HomePage.
+      //     if (snapshot.hasData) {
+      //       return const MainScreen();
+      //     }
+      //     // If no user is logged in, navigate to LandingPage.
+      //     return const LandingPage();
+      //   },
+      // ),
+      home: WindRelievingPoseWidget(),
+    );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:monsy_weird_package/pages/yoga_positions_screen.dart';
 
+import '../yoga/yoga_poses_dashboard.dart';
+
 class YogaPage extends StatelessWidget {
   const YogaPage({super.key});
 
@@ -42,7 +44,7 @@ class YogaPage extends StatelessWidget {
                       ),
                       // yoga image
                       const Image(
-                        image: AssetImage('images/yoga_image.png'),
+                        image: AssetImage('assets/images/yoga_image.png'),
                       ),
 
                       const SizedBox(
@@ -95,7 +97,7 @@ class YogaPage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const YogaPositionsScreen()));
+                                        const YogaPosesDashboard()));
                           },
                           child: const Text(
                             "go to yoga positions",

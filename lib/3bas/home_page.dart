@@ -9,12 +9,12 @@ import 'package:monsy_weird_package/3bas/tasks_page.dart';
 import 'package:monsy_weird_package/3bas/user_profile_page.dart';
 import 'package:monsy_weird_package/3bas/visual_memory_game_screen.dart';
 import 'package:monsy_weird_package/pages/ai_chat_page.dart';
+import '../mood/mood_page_test_one.dart';
 import '../pages/contacts_page.dart';
-import '../pages/mood_page_test_one.dart';
 import '../pages/yoga_page.dart';
 import 'BreathingExerciseScreen.dart';
-import 'LandingPage.dart';
-import 'game_screen.dart'; // For random data generation
+import 'game_screen.dart';
+import 'happines_dashboard.dart'; // For random data generation
 
 // Import your TasksPage here
 // Adjust path if needed
@@ -29,7 +29,6 @@ const Color cardBackground = Colors.white; // Background for cards
 const Color accentGreen = Color(
     0xFFE0FFEA); // Lighter green for checkmark background (approximated from image)
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -41,7 +40,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   // Text editing controller for the "Talk to us..." field
   late TextEditingController textController;
   late FocusNode textFieldFocusNode;
@@ -50,32 +48,54 @@ class _HomePageState extends State<HomePage> {
       "pageTitle": "Number Memory Game",
       "description": "Improve your short term memory for numbers.",
       "navigation": const GameScreen(),
-      "icon": const Icon(CupertinoIcons.number_square_fill,size: 100,color: primaryGreen,)
+      "icon": const Icon(
+        CupertinoIcons.number_square_fill,
+        size: 100,
+        color: primaryGreen,
+      )
     },
     {
       "pageTitle": "Visual Memory Game",
-      "description": "boost cognitive function by sharpening the ability to recall and process visual information.",
+      "description":
+          "boost cognitive function by sharpening the ability to recall and process visual information.",
       "navigation": const VisualMemoryGameScreen(),
-      "icon": const Icon(CupertinoIcons.eye,size: 100,color: primaryGreen,)
+      "icon": const Icon(
+        CupertinoIcons.eye,
+        size: 100,
+        color: primaryGreen,
+      )
     },
     {
       "pageTitle": "Breathing Exercise",
-      "description": "Help regulate the nervous system, reducing stress and promoting a sense of calm which positively impacts mental well-being.",
+      "description":
+          "Help regulate the nervous system, reducing stress and promoting a sense of calm which positively impacts mental well-being.",
       "navigation": const BreathingExerciseScreen(),
-      "icon": const Icon(Icons.air,size: 100,color: primaryGreen,)
+      "icon": const Icon(
+        Icons.air,
+        size: 100,
+        color: primaryGreen,
+      )
     },
     {
       "pageTitle": "Yoga",
-      "description": "Improves mental health by integrating movement, breath, and meditation to reduce stress and anxiety.",
+      "description":
+          "Improves mental health by integrating movement, breath, and meditation to reduce stress and anxiety.",
       "navigation": const YogaPage(),
-      "icon": const Icon(Icons.self_improvement,size: 100,color: primaryGreen,)
+      "icon": const Icon(
+        Icons.self_improvement,
+        size: 100,
+        color: primaryGreen,
+      )
     },
   ];
 
-
   // For the bottom navigation bar
   int _selectedIndex = 0;
-  final List<Widget> _screens = [HomePage(), Placeholder(), ContactsPage()];// Current selected tab index
+  final List<Widget> _screens = [
+    HomePage(),
+    Placeholder(),
+    ContactsPage()
+  ]; // Current selected tab index
 
   // Current authenticated user
   User? currentUser;
@@ -118,7 +138,8 @@ class _HomePageState extends State<HomePage> {
           });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('User document does not exist for UID: ${currentUser!.uid}'),
+              content: Text(
+                  'User document does not exist for UID: ${currentUser!.uid}'),
               backgroundColor: Colors.red, // Highlight error in red
               duration: const Duration(seconds: 3), // Visible for 3 seconds
             ),
@@ -159,9 +180,11 @@ class _HomePageState extends State<HomePage> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Task $taskId completion status toggled to ${!currentStatus}'),
+          content: Text(
+              'Task $taskId completion status toggled to ${!currentStatus}'),
           backgroundColor: Colors.green, // ✅ Use green for success feedback
-          duration: const Duration(seconds: 2), // ✅ Keep it short for quick updates
+          duration:
+              const Duration(seconds: 2), // ✅ Keep it short for quick updates
         ),
       );
     } catch (e) {
@@ -198,12 +221,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double baseRadius = screenWidth / 10;
+    double baseRadius = screenWidth / 11;
     // If no user is logged in, show a message or redirect
     if (currentUser == null) {
       return const Scaffold(
@@ -253,8 +274,11 @@ class _HomePageState extends State<HomePage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('User signed out successfully'),
-                            backgroundColor: Colors.blue, // ✅ Use blue for neutral feedback
-                            duration: Duration(seconds: 2), // ✅ Short duration for quick confirmation
+                            backgroundColor: Colors.blue,
+                            // ✅ Use blue for neutral feedback
+                            duration: Duration(
+                                seconds:
+                                    2), // ✅ Short duration for quick confirmation
                           ),
                         );
                         // The StreamBuilder in main.dart will automatically handle navigation to LandingPage
@@ -338,32 +362,49 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding:
                     const EdgeInsetsDirectional.fromSTEB(30.0, 0.0, 0.0, 10.0),
-                child: Text(
-                  'How are you Feeling Today?',
-                  style: GoogleFonts.inter(
-                    color: primaryText,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w600, // Semi-bold
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'How are you Feeling Today?',
+                      style: GoogleFonts.inter(
+                        color: primaryText,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w600, // Semi-bold
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HappinessDashboard()));
+                        }, icon: Icon(Icons.more_horiz_rounded))
+                  ],
                 ),
               ),
               //log your mood
-              SingleChildScrollView( scrollDirection: Axis.horizontal,
-                child: Container(child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildMoodAvatar("😞", "Very Sad", Colors.red[300]!, baseRadius),
-                    _buildMoodAvatar("🙁", "Sad", Colors.orange[300]!, baseRadius),
-                    _buildMoodAvatar("😐", "Neutral", Colors.yellow[300]!, baseRadius),
-                    _buildMoodAvatar("🙂", "Happy", Colors.green[300]!, baseRadius),
-                    _buildMoodAvatar("😃", "Very Happy", Colors.blue[300]!, baseRadius),
-                  ],
-                ),),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildMoodAvatar(
+                          "😞", "Very Sad", Colors.red[300]!, baseRadius),
+                      _buildMoodAvatar(
+                          "🙁", "Sad", Colors.orange[300]!, baseRadius),
+                      _buildMoodAvatar(
+                          "😐", "Neutral", Colors.yellow[300]!, baseRadius),
+                      _buildMoodAvatar(
+                          "🙂", "Happy", Colors.green[300]!, baseRadius),
+                      _buildMoodAvatar(
+                          "😃", "Very Happy", Colors.blue[300]!, baseRadius),
+                    ],
+                  ),
+                ),
               ),
 
-              SizedBox(height: 20,),
-
-
+              SizedBox(
+                height: 20,
+              ),
 
               Padding(
                 padding:
@@ -401,7 +442,7 @@ class _HomePageState extends State<HomePage> {
                                 // Prevents immediate focus on load
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  hintText: 'Talk to us...',
+                                  hintText: 'want to speak with an AI?',
                                   hintStyle: GoogleFonts.inter(
                                     color: secondaryText,
                                     fontSize: 17.0,
@@ -595,7 +636,8 @@ class _HomePageState extends State<HomePage> {
                               .orderBy('completed',
                                   descending: false) // Uncompleted tasks first
                               .snapshots()
-                          : const Stream.empty(), // Return empty stream if no user
+                          : const Stream.empty(),
+                      // Return empty stream if no user
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -734,7 +776,8 @@ class _HomePageState extends State<HomePage> {
                   child: SizedBox(
                     height: 225, // Adjust height as needed
                     child: ListView.builder(
-                      scrollDirection: Axis.horizontal, // ✅ Enables horizontal scrolling
+                      scrollDirection: Axis.horizontal,
+                      // ✅ Enables horizontal scrolling
                       itemCount: exercisePages.length,
                       itemBuilder: (context, index) {
                         var pageData = exercisePages[index];
@@ -744,7 +787,8 @@ class _HomePageState extends State<HomePage> {
                           child: Card(
                             color: cardBackground,
                             elevation: 4,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
                             child: Container(
                               width: 250, // Set a fixed width for each card
                               padding: const EdgeInsets.all(12),
@@ -752,22 +796,30 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Center(child:pageData["icon"]), // Display the icon
+                                  Center(child: pageData["icon"]),
+                                  // Display the icon
                                   const SizedBox(height: 10),
                                   Text(pageData["pageTitle"]!,
-                                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold)),
                                   const SizedBox(height: 5),
                                   Text(pageData["description"]!,
-                                      style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[600])),
                                   const SizedBox(height: 10),
                                   Align(
                                     alignment: Alignment.centerRight,
                                     child: IconButton(
-                                      icon: const Icon(Icons.arrow_forward_ios, size: 18, color: Colors.grey),
+                                      icon: const Icon(Icons.arrow_forward_ios,
+                                          size: 18, color: Colors.grey),
                                       onPressed: () {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => pageData["navigation"]),
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  pageData["navigation"]),
                                         );
                                       },
                                     ),
@@ -787,16 +839,18 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-
-
       ),
     );
   }
 
-  Widget _buildMoodAvatar(String emoji, String moodText, Color bgColor, double baseRadius) {
+  Widget _buildMoodAvatar(
+      String emoji, String moodText, Color bgColor, double baseRadius) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HappinessLevelPage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => HappinessLevelPage()));
       },
       child: Padding(
         padding: const EdgeInsets.all(4.0),
@@ -808,5 +862,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }

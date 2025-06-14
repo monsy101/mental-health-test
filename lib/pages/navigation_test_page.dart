@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'mood_history_graph_page.dart';
-import 'mood_history_page.dart';
-import 'mood_page_test_one.dart';
+import '../mood/mood_history_graph_page.dart';
+import '../mood/mood_history_page.dart';
+import '../mood/mood_page_test_one.dart';
 
 class NavigationTestPage extends StatelessWidget {
   const NavigationTestPage({super.key});

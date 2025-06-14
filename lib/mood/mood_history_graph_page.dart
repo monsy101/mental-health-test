@@ -167,7 +167,7 @@ class _MoodHistoryGraphPageState extends State<MoodHistoryGraphPage> {
             // Placeholder for extra content
             ElevatedButton(
               onPressed: () {},
-              child: Text("nseet akon family frindly"),
+              child: Text("Add a new record?"),
             ),
           ],
         ),
