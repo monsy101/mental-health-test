@@ -45,7 +45,10 @@ dependencies:
   intl:
   google_fonts:
   webview_flutter:
-  smooth_page_indicator: 
+  smooth_page_indicator:
+  firebase_storage:
+  image_picker:
+  permission_handler:
 
 dev_dependencies:
   flutter_test:

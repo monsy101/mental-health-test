@@ -131,6 +131,8 @@ class _HomePageState extends State<HomePage> {
             _firstName = userDoc['firstName'] as String? ??
                 currentUser?.displayName?.split(' ').first ??
                 'Guest';
+
+            // _userProfilePicture = userDoc[''] as
           });
         } else {
           setState(() {
@@ -424,125 +426,51 @@ class _HomePageState extends State<HomePage> {
                     borderRadius:
                         BorderRadius.circular(18.0), // Rounded corners
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            0.0, 12.0, 12.0, 0.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller: textController,
-                                focusNode: textFieldFocusNode,
-                                autofocus: false,
-                                // Prevents immediate focus on load
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  hintText: 'want to speak with an AI?',
-                                  hintStyle: GoogleFonts.inter(
-                                    color: secondaryText,
-                                    fontSize: 17.0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                  enabledBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                      // No visible border
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius
-                                        .zero, // No rounded corners for underline
-                                  ),
-                                  focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                      // No visible border
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.zero,
-                                  ),
-                                  errorBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.zero,
-                                  ),
-                                  focusedErrorBorder:
-                                      const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.zero,
-                                  ),
-                                  contentPadding:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 4.0, 8.0, 12.0),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        12.0, 4.0, 12.0, 12.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      // Align button to end
+                      children: [
+                        Text("Want to talk with an AI assistant?", style: TextStyle(fontWeight: FontWeight.bold,color: primaryText),),
+                        Flexible(
+                          child: Align(
+                            alignment: AlignmentDirectional.centerEnd,
+                            // Align button to the end
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            const AIChatPage()));
+                                print('Talk to us button pressed!');
+                                // Handle text submission here
+                              },
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(90.0, 40.0),
+                                // Fixed size for button
+                                backgroundColor: primaryGreen,
+                                // Green background
+                                foregroundColor: Colors.white,
+                                // White icon color
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      12.0), // Rounded corners
                                 ),
-                                style: GoogleFonts.inter(
-                                  color: primaryText,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                                maxLines: 8,
-                                minLines: 3,
-                                // No validator for this text field in the original FlutterFlow code, assuming it's free text.
+                                elevation: 2.0,
+                              ),
+                              child: const Icon(
+                                Icons.arrow_forward, // Arrow icon
+                                size: 25.0,
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            12.0, 4.0, 12.0, 12.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          // Align button to end
-                          children: [
-                            Flexible(
-                              child: Align(
-                                alignment: AlignmentDirectional.centerEnd,
-                                // Align button to the end
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                const AIChatPage()));
-                                    print('Talk to us button pressed!');
-                                    // Handle text submission here
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(90.0, 40.0),
-                                    // Fixed size for button
-                                    backgroundColor: primaryGreen,
-                                    // Green background
-                                    foregroundColor: Colors.white,
-                                    // White icon color
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          12.0), // Rounded corners
-                                    ),
-                                    elevation: 2.0,
-                                  ),
-                                  child: const Icon(
-                                    Icons.arrow_forward, // Arrow icon
-                                    size: 25.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
