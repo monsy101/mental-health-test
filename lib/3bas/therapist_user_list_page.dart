@@ -6,6 +6,18 @@ import 'package:provider/provider.dart';
 import '../pages/chat_page.dart';
 import '../services/auth/auth_service.dart';
 
+
+
+// Define custom colors based on your specifications and image analysis
+const Color primaryGreen = Color(0xFF91EEA5); // The main green color
+const Color lightBackground =
+Color(0xFFF1F4F8); // Background color for the page
+const Color primaryText = Color(0xFF14181B); // Main dark text color
+const Color secondaryText = Color(0xFF57636C); // Hint text, descriptive text
+const Color cardBackground = Colors.white; // Background for cards
+const Color accentGreen = Color(
+    0xFFE0FFEA); // Lighter green for checkmark background (approximated from image)
+
 class TherapistUserListPage extends StatefulWidget {
   const TherapistUserListPage({super.key});
 
@@ -24,13 +36,24 @@ class _TherapistUserListPageState extends State<TherapistUserListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("All Users"),
-        actions: [
-          IconButton(onPressed: signOut, icon: const Icon(Icons.logout)),
-        ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+          child: AppBar(
+            title: const Text("Users"),
+            centerTitle: true,
+            backgroundColor: primaryGreen,
+          ),
+        ),
       ),
-      body: _buildUserList(),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: _buildUserList(),
+      ),
     );
   }
 
@@ -71,7 +94,6 @@ class _TherapistUserListPageState extends State<TherapistUserListPage> {
         child: ListTile(
           title: Text(userEmail,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          subtitle: Text("Role: $userRole"),
           // ✅ Display role info
           trailing: Icon(Icons.chat, color: Colors.green),
           onTap: () {
@@ -99,7 +121,13 @@ class _TherapistUserListPageState extends State<TherapistUserListPage> {
             child: CircleAvatar(child: Icon(Icons.person)),
             onTap: () {
               print("test");
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>TherapistUserProfilePage(userId: userID,)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          TherapistUserProfilePage(
+                            userId: userID,
+                          )));
             },
           ),
         ),

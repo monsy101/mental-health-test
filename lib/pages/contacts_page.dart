@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:monsy_weird_package/3bas/add_task_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../services/auth/auth_service.dart';
@@ -14,7 +15,6 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-
   // instance of auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -29,15 +29,26 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("HomePage"),
-        actions: [
-          // sign out button
-          IconButton(onPressed: signOut, icon: const Icon(Icons.logout))
-        ],
+      backgroundColor: lightBackground,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+          child: AppBar(
+            title: const Text("Contacts"),
+            centerTitle: true,
+            backgroundColor: primaryGreen,
+          ),
+        ),
       ),
-      body: _buildUserList(),
-    );;
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: _buildUserList(),
+      ),
+    );
   }
 
   // build a list of users except for the current logged in user
@@ -56,10 +67,13 @@ class _ContactsPageState extends State<ContactsPage> {
 
         // show users in a list format by using a snapshot
         return ListView(
-          children: snapshot.data!.docs
-              .map<Widget>((doc) => _buildUserListItem(doc))
-              .toList(),
+          padding: EdgeInsets.symmetric(vertical: 16),
+          children: snapshot.data!.docs.map<Widget>((doc) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6), // Adds spacing between tiles
+            child: _buildUserListItem(doc),
+          )).toList(),
         );
+
       },
     );
   }
@@ -71,7 +85,18 @@ class _ContactsPageState extends State<ContactsPage> {
     //display all users except current user
     if (_auth.currentUser!.email != data['email']) {
       return ListTile(
-        title: Text(data['email']),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8)
+        ),
+        tileColor: cardBackground,
+        trailing: const Icon(
+          Icons.chat,
+          color: primaryGreen,
+        ),
+        title: data['firstName'] != Null
+            ? Text("${data['firstName']} ${data['lastName']}")
+            : Text(data['email']),
         onTap: () {
           // pass the clicked user's UID to the chat page
           Navigator.push(
@@ -85,7 +110,7 @@ class _ContactsPageState extends State<ContactsPage> {
           );
         },
       );
-    }else{
+    } else {
       return Container();
     }
   }

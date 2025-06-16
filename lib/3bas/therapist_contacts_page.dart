@@ -6,6 +6,13 @@ import 'package:provider/provider.dart';
 import '../pages/chat_page.dart';
 import '../services/auth/auth_service.dart';
 
+const Color primaryGreen = Color(0xFF91EEA5);
+const Color lightBackground = Color(0xFFF1F4F8);
+const Color primaryText = Color(0xFF14181B);
+const Color secondaryText = Color(0xFF57636C);
+const Color cardBackground = Colors.white;
+const Color accentGreen = Color(0xFFE0FFEA);
+
 
 class TherapistContactsPage extends StatefulWidget {
   const TherapistContactsPage({super.key});
@@ -26,13 +33,24 @@ class _TherapistContactsPageState extends State<TherapistContactsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Find a Therapist"),
-        actions: [
-          IconButton(onPressed: signOut, icon: const Icon(Icons.logout)),
-        ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+          child: AppBar(
+            title: const Text("Therapists"),
+            centerTitle: true,
+            backgroundColor: primaryGreen,
+          ),
+        ),
       ),
-      body: _buildTherapistList(), // ✅ Display verified therapists
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: _buildTherapistList(),
+      ), // ✅ Display verified therapists
     );
   }
 

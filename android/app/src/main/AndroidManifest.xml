@@ -5,9 +5,9 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/> <!-- ✅ Required for Android 13+ -->
 
     <application
-        android:label="TherapeuTeck"
+        android:label="TherapeuTech"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
 
         <activity
             android:name=".MainActivity"

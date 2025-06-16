@@ -8,7 +8,8 @@ class TherapistUserProfilePage extends StatefulWidget {
   const TherapistUserProfilePage({super.key, required this.userId});
 
   @override
-  State<TherapistUserProfilePage> createState() => _TherapistUserProfilePageState();
+  State<TherapistUserProfilePage> createState() =>
+      _TherapistUserProfilePageState();
 }
 
 class _TherapistUserProfilePageState extends State<TherapistUserProfilePage> {
@@ -25,7 +26,8 @@ class _TherapistUserProfilePageState extends State<TherapistUserProfilePage> {
 
   // ✅ Fetch user data from Firestore
   Future<void> _fetchUserData() async {
-    DocumentSnapshot doc = await _firestore.collection("users").doc(widget.userId).get();
+    DocumentSnapshot doc =
+        await _firestore.collection("users").doc(widget.userId).get();
     if (doc.exists) {
       setState(() {
         userData = doc.data() as Map<String, dynamic>;
@@ -33,7 +35,9 @@ class _TherapistUserProfilePageState extends State<TherapistUserProfilePage> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: User profile not found"), backgroundColor: Colors.red),
+        SnackBar(
+            content: Text("Error: User profile not found"),
+            backgroundColor: Colors.red),
       );
       Navigator.pop(context);
     }
@@ -44,30 +48,32 @@ class _TherapistUserProfilePageState extends State<TherapistUserProfilePage> {
     return Scaffold(
       appBar: AppBar(title: Text("User Profile")),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator()) // ✅ Show loader while fetching data
+          ? Center(
+              child:
+                  CircularProgressIndicator()) // ✅ Show loader while fetching data
           : userData == null
-          ? Center(child: Text("User data not available"))
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            _buildReadOnlyField("First Name", userData!['firstName']),
-            _buildReadOnlyField("Last Name", userData!['lastName']),
-            _buildReadOnlyField("Email", userData!['email']),
-            _buildReadOnlyField("Role", userData!['role'] ?? "User"),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("Back"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueGrey,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              ),
-            ),
-          ],
-        ),
-      ),
+              ? Center(child: Text("User data not available"))
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      _buildReadOnlyField("First Name", userData!['firstName'] == null ? "N/A" : userData!['firstName']),
+                      _buildReadOnlyField("Last Name", userData!['lastName'] == null ? "N/A" : userData!['lastName']),
+                      _buildReadOnlyField("Email", userData!['email']),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text("Back"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueGrey,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
     );
   }
 
@@ -78,7 +84,8 @@ class _TherapistUserProfilePageState extends State<TherapistUserProfilePage> {
       child: TextField(
         controller: TextEditingController(text: value),
         readOnly: true,
-        decoration: InputDecoration(labelText: label, border: OutlineInputBorder()),
+        decoration:
+            InputDecoration(labelText: label, border: OutlineInputBorder()),
       ),
     );
   }

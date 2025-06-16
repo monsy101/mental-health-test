@@ -98,9 +98,25 @@ class _UserProfilePageState extends State<UserProfilePage> {
     await requestStoragePermission(context);
 
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image == null) return;
+    if (image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("No image selected"), backgroundColor: Colors.orange),
+      );
+      return;
+    }
 
     File file = File(image.path);
+
+    if (!file.existsSync()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Error: Selected file does not exist"),
+            backgroundColor: Colors.red),
+      );
+      return;
+    }
+
     String fileName = "profile_pictures/$userId.jpg";
 
     try {
@@ -117,7 +133,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             content: Text("Profile picture updated successfully!"),
             backgroundColor: Colors.green),
       );
@@ -150,80 +166,109 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView( // ✅ Makes the entire page scrollable
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: _uploadProfilePicture,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: profilePicUrl.isNotEmpty ? NetworkImage(profilePicUrl) : null,
-                  backgroundColor: Colors.grey[300],
-                  child: profilePicUrl.isEmpty ? Icon(Icons.person, size: 50, color: Colors.white) : null,
+          : Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: _uploadProfilePicture,
+                        child: Material(
+                          elevation: 4, // Adjust elevation as needed
+                          shape: CircleBorder(),
+                          child: CircleAvatar(
+                            radius: 80,
+                            backgroundImage: profilePicUrl.isNotEmpty
+                                ? NetworkImage(profilePicUrl)
+                                : null,
+                            backgroundColor: cardBackground,
+                            child: profilePicUrl.isEmpty
+                                ? Icon(Icons.person,
+                                    size: 50, color: primaryGreen)
+                                : null,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text("Tap to change profile picture",
+                          style: TextStyle(color: secondaryText, fontSize: 14)),
+                      const SizedBox(height: 30),
+                      _buildEditableProfileCard(
+                        "First Name",
+                        _firstNameController,
+                      ),
+                      _buildEditableProfileCard(
+                        "Last Name",
+                        _lastNameController,
+                      ),
+                      _buildEditableProfileCard(
+                        "Email",
+                        _emailController,
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _updateUserData,
+                        child: const Text(
+                          "Update Profile",
+                          style: TextStyle(
+                              color: primaryText,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 6,
+                          backgroundColor: primaryGreen,
+                          foregroundColor: cardBackground,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 100,
+                      ),
+                      ElevatedButton(
+                        onPressed: _signOut,
+                        child: const Text("Sign Out"),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 4,
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 10),
-              Text("Tap to change profile picture", style: TextStyle(color: secondaryText, fontSize: 14)),
-              const SizedBox(height: 20),
-              _buildEditableProfileCard("First Name", _firstNameController),
-              _buildEditableProfileCard("Last Name", _lastNameController),
-              _buildEditableProfileCard("Email", _emailController),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _updateUserData,
-                child: const Text("Update Profile"),
-                style: ElevatedButton.styleFrom(
-                  elevation: 6,
-                  backgroundColor: primaryGreen,
-                  foregroundColor: lightBackground,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _signOut,
-                child: const Text("Sign Out"),
-                style: ElevatedButton.styleFrom(
-                  elevation: 4,
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 
   Widget _buildEditableProfileCard(
       String label, TextEditingController controller) {
     return Card(
-      elevation: 4,
-      color: cardBackground,
-      margin: EdgeInsets.symmetric(vertical: 10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(label,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: primaryText)),
-            TextField(
-              controller: controller,
-              decoration: InputDecoration(border: InputBorder.none),
-              style: TextStyle(fontSize: 14, color: secondaryText),
-            ),
-          ],
-        ),
-      ),
-    );
+        elevation: 4,
+        color: cardBackground,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: primaryText)),
+                TextField(
+                  controller: controller,
+                  decoration: const InputDecoration(border: InputBorder.none),
+                  style: TextStyle(fontSize: 14, color: secondaryText),
+                )
+              ],
+            )));
   }
 }
