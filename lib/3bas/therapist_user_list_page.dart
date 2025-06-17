@@ -108,13 +108,13 @@ class _TherapistUserListPageState extends State<TherapistUserListPage> {
                 ),
               );
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Error: User ID is missing"),
-                  backgroundColor: Colors.red,
-                  duration: Duration(seconds: 2),
-                ),
-              );
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content: Text("Error: User ID is missing"),
+              //     backgroundColor: Colors.red,
+              //     duration: Duration(seconds: 2),
+              //   ),
+              // );
             }
           },
           leading: GestureDetector(

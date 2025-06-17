@@ -138,23 +138,23 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             _firstName = currentUser?.displayName?.split(' ').first ?? 'Guest';
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                  'User document does not exist for UID: ${currentUser!.uid}'),
-              backgroundColor: Colors.red, // Highlight error in red
-              duration: const Duration(seconds: 3), // Visible for 3 seconds
-            ),
-          );
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //     content: Text(
+          //         'User document does not exist for UID: ${currentUser!.uid}'),
+          //     backgroundColor: Colors.red, // Highlight error in red
+          //     duration: const Duration(seconds: 3), // Visible for 3 seconds
+          //   ),
+          // );
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error fetching user data: $e'),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text('Error fetching user data: $e'),
+        //     backgroundColor: Colors.red,
+        //     duration: const Duration(seconds: 3),
+        //   ),
+        // );
         setState(() {
           _firstName = currentUser?.displayName?.split(' ').first ??
               'Guest'; // Fallback to display name or 'Guest'
@@ -180,23 +180,23 @@ class _HomePageState extends State<HomePage> {
       await FirebaseFirestore.instance.collection('tasks').doc(taskId).update({
         'completed': !currentStatus,
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              'Task $taskId completion status toggled to ${!currentStatus}'),
-          backgroundColor: Colors.green, // ✅ Use green for success feedback
-          duration:
-              const Duration(seconds: 2), // ✅ Keep it short for quick updates
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text(
+      //         'Task $taskId completion status toggled to ${!currentStatus}'),
+      //     backgroundColor: Colors.green, // ✅ Use green for success feedback
+      //     duration:
+      //         const Duration(seconds: 2), // ✅ Keep it short for quick updates
+      //   ),
+      // );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error toggling task completion: $e'),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 3),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Error toggling task completion: $e'),
+      //     backgroundColor: Colors.red,
+      //     duration: const Duration(seconds: 3),
+      //   ),
+      // );
       // Optionally show an alert to the user
       _showAlertDialog(
           'Error', 'Failed to update task completion. Please try again.');
@@ -273,16 +273,16 @@ class _HomePageState extends State<HomePage> {
                           MaterialPageRoute(
                               builder: (context) => const UserProfilePage()),
                         );
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('User signed out successfully'),
-                            backgroundColor: Colors.blue,
-                            // ✅ Use blue for neutral feedback
-                            duration: Duration(
-                                seconds:
-                                    2), // ✅ Short duration for quick confirmation
-                          ),
-                        );
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   const SnackBar(
+                        //     content: Text('User signed out successfully'),
+                        //     backgroundColor: Colors.blue,
+                        //     // ✅ Use blue for neutral feedback
+                        //     duration: Duration(
+                        //         seconds:
+                        //             2), // ✅ Short duration for quick confirmation
+                        //   ),
+                        // );
                         // The StreamBuilder in main.dart will automatically handle navigation to LandingPage
                       },
                       borderRadius: BorderRadius.circular(40.0),

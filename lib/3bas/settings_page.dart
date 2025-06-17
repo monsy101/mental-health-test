@@ -75,17 +75,17 @@ class _SettingsPageState extends State<SettingsPage> {
         'email': _emailController.text.trim(),
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text("Profile updated successfully!"),
-            backgroundColor: Colors.green),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //       content: Text("Profile updated successfully!"),
+      //       backgroundColor: Colors.green),
+      // );
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text("Error updating profile: $error"),
-            backgroundColor: Colors.red),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //       content: Text("Error updating profile: $error"),
+      //       backgroundColor: Colors.red),
+      // );
     }
   }
 

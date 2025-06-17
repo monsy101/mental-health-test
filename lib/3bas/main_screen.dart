@@ -30,13 +30,13 @@ class _MainScreenState extends State<MainScreen> {
           });
 
           // ✅ Show a Snackbar when page changes
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Switched to ${_screens[index].runtimeType}'),
-              backgroundColor: Colors.blueAccent,
-              duration: Duration(seconds: 2),
-            ),
-          );
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //     content: Text('Switched to ${_screens[index].runtimeType}'),
+          //     backgroundColor: Colors.blueAccent,
+          //     duration: Duration(seconds: 2),
+          //   ),
+          // );
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),

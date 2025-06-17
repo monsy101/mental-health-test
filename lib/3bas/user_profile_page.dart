@@ -72,17 +72,17 @@ class _UserProfilePageState extends State<UserProfilePage> {
         'email': _emailController.text.trim(),
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text("Profile updated successfully!"),
-            backgroundColor: Colors.green),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //       content: Text("Profile updated successfully!"),
+      //       backgroundColor: Colors.green),
+      // );
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text("Error updating profile: $error"),
-            backgroundColor: Colors.red),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //       content: Text("Error updating profile: $error"),
+      //       backgroundColor: Colors.red),
+      // );
     }
   }
 
@@ -99,21 +99,21 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text("No image selected"), backgroundColor: Colors.orange),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //       content: Text("No image selected"), backgroundColor: Colors.orange),
+      // );
       return;
     }
 
     File file = File(image.path);
 
     if (!file.existsSync()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text("Error: Selected file does not exist"),
-            backgroundColor: Colors.red),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //       content: Text("Error: Selected file does not exist"),
+      //       backgroundColor: Colors.red),
+      // );
       return;
     }
 
@@ -132,17 +132,17 @@ class _UserProfilePageState extends State<UserProfilePage> {
         profilePicUrl = downloadUrl;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text("Profile picture updated successfully!"),
-            backgroundColor: Colors.green),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //       content: Text("Profile picture updated successfully!"),
+      //       backgroundColor: Colors.green),
+      // );
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text("Error uploading picture: $error"),
-            backgroundColor: Colors.red),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //       content: Text("Error uploading picture: $error"),
+      //       backgroundColor: Colors.red),
+      // );
     }
   }
 

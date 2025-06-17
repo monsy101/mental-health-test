@@ -34,11 +34,11 @@ class _TherapistUserProfilePageState extends State<TherapistUserProfilePage> {
         _isLoading = false;
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text("Error: User profile not found"),
-            backgroundColor: Colors.red),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //       content: Text("Error: User profile not found"),
+      //       backgroundColor: Colors.red),
+      // );
       Navigator.pop(context);
     }
   }
